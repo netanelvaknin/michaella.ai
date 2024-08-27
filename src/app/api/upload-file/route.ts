@@ -1,8 +1,8 @@
-import { GoogleAIFileManager } from "@google/generative-ai/server";
+// import { GoogleAIFileManager } from "@google/generative-ai/server";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import { prompt } from "@/app/api/upload-file/constants";
 
-const fileManager = new GoogleAIFileManager(process.env.GOOGLE_API_KEY || "");
+// const fileManager = new GoogleAIFileManager(process.env.GOOGLE_API_KEY || "");
 const genAI = new GoogleGenerativeAI(process.env.GOOGLE_API_KEY || "");
 const model = genAI.getGenerativeModel({
   model: "gemini-1.5-flash",
@@ -13,7 +13,7 @@ export async function POST(request: Request) {
     const formData = await request.formData();
 
     const response = await fetch(
-      `https://generativelanguage.googleapis.com/upload/v1beta/files?&key=${fileManager.apiKey}`,
+      `https://generativelanguage.googleapis.com/upload/v1beta/files?&key=${process.env.GOOGLE_API_KEY}`,
       { method: "post", body: formData }
     );
     const uploadResponse = await response.json();
