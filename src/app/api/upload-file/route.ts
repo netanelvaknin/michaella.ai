@@ -46,6 +46,6 @@ export async function POST(request: Request) {
     return Response.json({ res: quiz });
   } catch (e) {
     console.error(e);
-    return Response.json({ res: null, status: 400 });
+    return Response.json({ res: e, status: 400 });
   }
 }
