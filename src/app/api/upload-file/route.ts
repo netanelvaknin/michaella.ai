@@ -4,7 +4,7 @@ import { GoogleAIFileManager } from "@google/generative-ai/server";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import { prompt } from "@/app/api/upload-file/constants";
 
-const UPLOAD_DIR = path.resolve("public/uploads");
+const UPLOAD_DIR = path.resolve("uploads");
 const fileManager = new GoogleAIFileManager(process.env.GOOGLE_API_KEY || "");
 const genAI = new GoogleGenerativeAI(process.env.GOOGLE_API_KEY || "");
 const model = genAI.getGenerativeModel({
@@ -41,7 +41,7 @@ export async function POST(request: Request) {
     ]);
 
     const quiz = result.response.text();
-    // fs.unlinkSync(filePath);
+    fs.unlinkSync(filePath);
 
     return Response.json({ res: quiz });
   } catch (e) {
