@@ -8,6 +8,8 @@ const model = genAI.getGenerativeModel({
   model: "gemini-1.5-flash",
 });
 
+export const maxDuration = 60; // This function can run for a maximum of 60 seconds
+
 export async function POST(request: Request) {
   try {
     const formData = await request.formData();
