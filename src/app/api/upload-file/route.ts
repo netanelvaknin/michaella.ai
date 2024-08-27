@@ -41,7 +41,7 @@ export async function POST(request: Request) {
     ]);
 
     const quiz = result.response.text();
-    fs.unlinkSync(filePath);
+    // fs.unlinkSync(filePath);
 
     return Response.json({ res: quiz });
   } catch (e) {
