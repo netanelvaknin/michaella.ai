@@ -21,8 +21,8 @@ export async function POST(request: Request) {
     const result = await model.generateContent([
       {
         fileData: {
-          mimeType: uploadResponse.file.mimeType,
-          fileUri: uploadResponse.file.uri,
+          mimeType: uploadResponse?.file?.mimeType,
+          fileUri: uploadResponse?.file?.uri,
         },
       },
       { text: prompt },
