@@ -1,3 +1,9 @@
+import { FileUpload } from "@/components";
+
 export default function Home() {
-  return <main></main>;
+  return (
+    <main>
+      <FileUpload />
+    </main>
+  );
 }
