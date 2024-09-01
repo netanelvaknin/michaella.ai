@@ -1,38 +1,48 @@
-import { GoogleAIFileManager } from "@google/generative-ai/server";
-import { GoogleGenerativeAI } from "@google/generative-ai";
-import { prompt } from "@/app/api/upload-file/constants";
+import OpenAI from "openai";
+import pdfParse from "pdf-parse";
 
-const fileManager = new GoogleAIFileManager(process.env.GOOGLE_API_KEY || "");
-const genAI = new GoogleGenerativeAI(process.env.GOOGLE_API_KEY || "");
-const model = genAI.getGenerativeModel({
-  model: "gemini-1.5-flash",
+const openai = new OpenAI({
+  organization: process.env.OPEN_AI_ORG_ID || "",
+  apiKey: process.env.OPEN_AI_KEY || "",
+  project: process.env.OPEN_AI_PROJECT_ID || "",
 });
 
 export const maxDuration = 60; // This function can run for a maximum of 60 seconds
 
 export async function POST(request: Request) {
   try {
+    // Parse the form data
     const formData = await request.formData();
+    const file = formData.get("file") as File;
 
-    const response = await fetch(
-      `https://generativelanguage.googleapis.com/upload/v1beta/files?&key=${fileManager.apiKey}`,
-      { method: "post", body: formData }
-    );
-    const uploadResponse = await response.json();
+    // Read the file content as a buffer
+    const buffer = Buffer.from(await file.arrayBuffer());
 
-    const result = await model.generateContent([
-      {
-        fileData: {
-          mimeType: uploadResponse?.file?.mimeType,
-          fileUri: uploadResponse?.file?.uri,
-        },
-      },
-      { text: prompt },
-    ]);
+    // Extract text from the PDF file directly in memory
+    const pdfData = await pdfParse(buffer);
+    const pdfText = pdfData.text;
 
-    const quiz = result.response.text();
+    const prompt = `אתה מערכת למידה חכמה. אנא צור 5 שאלות אמריקאיות על בסיס הטקסט הבא:
+${pdfText}
+השאלות חייבות להתייחס למלל של הטקסט עצמו.
 
-    return Response.json({ res: quiz });
+{
+  "data": [{question: "שאלה 1", answers: ["תשובה 1", "תשובה 2", "תשובה 3", "תשובה 4"], correct: "תשובה 2"}, {question: "שאלה 1", answers: ["תשובה 1", "תשובה 2", "תשובה 3", "תשובה 4"], correct: "תשובה 1"}]
+}
+
+תכלול שאלות ותשובות בעברית בלבד. השאלות והתשובות יהיו ללא סימנים מיוחדים בכלל, רק אותיות בעברית. אך ורק בפורמט JSON.
+כל שאלה צריכה לבחון הבנה עמוקה של החומר, והתשובות השגויות צריכות להיות סבירות אך שגויות. אל תכלול הסברים. אל תכלול תשובות מחוץ לפורמט שביקשתי ממך.
+ ${pdfText}`;
+
+    const completionResponse = await openai.chat.completions.create({
+      messages: [{ role: "system", content: prompt }],
+      model: "gpt-4o",
+      response_format: { type: "json_object" },
+    });
+
+    return Response.json({
+      res: completionResponse.choices[0].message.content,
+    });
   } catch (e) {
     console.error(e);
     return Response.json({ res: e, status: 400 });
