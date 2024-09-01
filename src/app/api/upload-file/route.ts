@@ -20,19 +20,27 @@ export async function POST(request: Request) {
 
     // Extract text from the PDF file directly in memory
     const pdfData = await pdfParse(buffer);
-    const pdfText = pdfData.text;
+    const pdfText = pdfData.text.trim();
 
-    const prompt = `אתה מערכת למידה חכמה. אנא צור 5 שאלות אמריקאיות על בסיס הטקסט הבא:
-${pdfText}
-השאלות חייבות להתייחס למלל של הטקסט עצמו.
+    if (!pdfText) {
+      return Response.json(
+        {
+          res: "Sorry, we couldn't identify any content in the PDF file you uploaded. Please try another file.",
+        },
+        { status: 400 }
+      );
+    }
 
-{
-  "data": [{question: "שאלה 1", answers: ["תשובה 1", "תשובה 2", "תשובה 3", "תשובה 4"], correct: "תשובה 2"}, {question: "שאלה 1", answers: ["תשובה 1", "תשובה 2", "תשובה 3", "תשובה 4"], correct: "תשובה 1"}]
-}
-
-תכלול שאלות ותשובות בעברית בלבד. השאלות והתשובות יהיו ללא סימנים מיוחדים בכלל, רק אותיות בעברית. אך ורק בפורמט JSON.
-כל שאלה צריכה לבחון הבנה עמוקה של החומר, והתשובות השגויות צריכות להיות סבירות אך שגויות. אל תכלול הסברים. אל תכלול תשובות מחוץ לפורמט שביקשתי ממך.
- ${pdfText}`;
+    const prompt = `You are AI based learning system, and you need to generate a set of question (5-10 questions) and answers based on the following text:
+    ${pdfText}
+    {
+      "data": [{question: "question1", answers: ["answer1", "answer2", "answer3", "answer4"], correct: "answer2"}, {question: "question1", answers: ["answer1", "answer2", "answer3", "answer4"], correct: "answer3"}]
+    }
+    
+    Everything will be in English only. If the text content is in Hebrew, please translate it to English before generating the questions.
+    Please give me only JSON format.
+    Every question should require a deep understanding of the material, and the wrong answers should be plausible but incorrect. Do not include explanations. Do not include answers outside the format I requested from you.
+`;
 
     const completionResponse = await openai.chat.completions.create({
       messages: [{ role: "system", content: prompt }],
@@ -45,6 +53,9 @@ ${pdfText}
     });
   } catch (e) {
     console.error(e);
-    return Response.json({ res: e, status: 400 });
+    return Response.json({
+      res: "An error occurred on our end. Please try again later.",
+      status: 400,
+    });
   }
 }

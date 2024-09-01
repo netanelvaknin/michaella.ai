@@ -54,13 +54,13 @@ function Question({ question, answers, correct }: QuestionProps) {
         <Grid>
           {showCorrectAnswer && !isCorrectAnswer && (
             <Alert variant="filled" severity="error" sx={{ mt: 2, mb: 2 }}>
-              התשובה הנכונה היא: {correct}
+              The correct answer is: {correct}
             </Alert>
           )}
 
           {showCorrectAnswer && isCorrectAnswer && (
             <Alert variant="filled" severity="success" sx={{ mt: 2, mb: 2 }}>
-              מעולה! תשובה נכונה
+              Great job! Correct answer!
             </Alert>
           )}
 
@@ -72,7 +72,7 @@ function Question({ question, answers, correct }: QuestionProps) {
               setIsDisabled(true);
             }}
           >
-            בדוק תשובה
+            Verify Answer
           </Button>
         </Grid>
       </Grid>

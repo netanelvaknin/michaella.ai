@@ -1,9 +1,9 @@
-import { FileUpload } from "@/components";
+import Link from "next/link";
 
 export default function Home() {
   return (
     <main>
-      <FileUpload />
+      <Link href="/dashboard">Go to Dashboard</Link>
     </main>
   );
 }
