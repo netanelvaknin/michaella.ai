@@ -1,9 +1,5 @@
-import Link from "next/link";
+import Hero from "@/components/hero/hero";
 
 export default function Home() {
-  return (
-    <main>
-      <Link href="/dashboard">Go to Dashboard</Link>
-    </main>
-  );
+  return <Hero />;
 }
