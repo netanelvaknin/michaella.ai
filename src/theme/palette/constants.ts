@@ -4,5 +4,6 @@ export const palette = {
   },
   secondary: {
     main: "#f4f4f5",
+    dark: "#6D6D73",
   },
 };

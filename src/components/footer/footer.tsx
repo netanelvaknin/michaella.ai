@@ -5,10 +5,15 @@ import { StyledFooter } from "@/components/footer/footer.styled";
 export const Footer = () => {
   return (
     <StyledFooter>
-      <Grid container justifyContent="space-around" alignItems="center">
+      <Grid
+        container
+        justifyContent="space-around"
+        alignItems="center"
+        sx={{ p: "0 38px" }}
+      >
         <Grid>
           <Typography variant="body1">
-            © 2024 Michaella.ai. All rights reserved.
+            © Michaella.ai 2024 All rights reserved.
           </Typography>
         </Grid>
 
