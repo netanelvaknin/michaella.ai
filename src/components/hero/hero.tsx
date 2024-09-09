@@ -9,7 +9,7 @@ export const Hero = () => {
   const router = useRouter();
 
   return (
-    <Box sx={{ height: "416px" }}>
+    <Box sx={{ height: "570px" }}>
       <Grid
         container
         justifyContent="center"
@@ -23,7 +23,7 @@ export const Hero = () => {
             variant="h1"
             sx={{ textAlign: "center", maxWidth: "550px" }}
           >
-            Unlock the power of AI-driven study tools
+            Unlock the power of AI-driven quizzes
           </Typography>
         </Grid>
 
