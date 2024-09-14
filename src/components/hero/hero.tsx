@@ -1,22 +1,25 @@
 "use client";
 
 import { Button, Typography } from "@/ui";
-import { Box } from "@mui/material";
+import { Box, Theme, useMediaQuery } from "@mui/material";
 import Grid from "@mui/material/Grid2";
 import { useRouter } from "next/navigation";
 
 export const Hero = () => {
   const router = useRouter();
+  const isSmallScreen = useMediaQuery((theme: Theme) =>
+    theme.breakpoints.down("md")
+  );
 
   return (
-    <Box sx={{ height: "570px" }}>
+    <Box sx={{ height: isSmallScreen ? "532px" : "570px" }}>
       <Grid
         container
         justifyContent="center"
         alignItems="center"
         direction="column"
         spacing={4}
-        sx={{ height: "100%" }}
+        sx={{ height: "100%", p: "0 14px" }}
       >
         <Grid>
           <Typography

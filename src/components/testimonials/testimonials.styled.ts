@@ -2,9 +2,13 @@
 
 import { styled } from "@mui/material";
 import Grid from "@mui/material/Grid2";
+import { MOBILE_QUERY } from "@/constants";
 
 export const StyledContainer = styled("div")`
   padding: 80px 0;
+  @media ${MOBILE_QUERY} {
+    padding: 80px 14px;
+  }
 `;
 
 export const TestimonialItem = styled(Grid)`

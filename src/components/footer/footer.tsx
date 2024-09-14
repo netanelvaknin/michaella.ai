@@ -9,7 +9,7 @@ export const Footer = () => {
         container
         justifyContent="space-around"
         alignItems="center"
-        sx={{ p: "0 38px", width: "100%" }}
+        sx={{ width: "100%" }}
       >
         <Grid>
           <Typography variant="body1">
