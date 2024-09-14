@@ -14,7 +14,9 @@ export const Navbar = () => {
         >
           <Grid>
             <Button variant="text" href="/" sx={{ minWidth: "auto", p: 0 }}>
-              <Typography variant="body1">Michaella</Typography>
+              <Typography variant="body1" sx={{ fontWeight: "700" }}>
+                Michaella
+              </Typography>
             </Button>
           </Grid>
 
