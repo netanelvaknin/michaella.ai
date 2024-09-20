@@ -12,7 +12,8 @@ export const muiSnackbarContentOverrides = {
     message: {
       display: "flex",
       alignItems: "center",
-      ...typography.h3,
+      ...typography.body1,
+      maxWidth: "245px",
       "& svg": {
         marginRight: "6px",
       },

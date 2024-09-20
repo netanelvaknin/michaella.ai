@@ -14,6 +14,7 @@ import {
   muiInputBaseOverrides,
   muiToggleButtonGroupOverrides,
   muiCssBaselineOverrides,
+  muiFormHelperText,
 } from "./components-overrides";
 
 let theme = createTheme({
@@ -27,6 +28,7 @@ let theme = createTheme({
     MuiCheckbox: muiCheckboxOverrides,
     MuiInputBase: muiInputBaseOverrides,
     MuiSnackbarContent: muiSnackbarContentOverrides,
+    MuiFormHelperText: muiFormHelperText,
   },
 } as ThemeOptions);
 

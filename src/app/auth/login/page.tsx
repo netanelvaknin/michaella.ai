@@ -10,6 +10,7 @@ import {
   Link,
 } from "@mui/material";
 import Grid from "@mui/material/Grid2";
+import { StyledContainer } from "@/app/auth/login/_login.styled";
 
 export default function Login() {
   const [values, setValues] = useState({
@@ -30,7 +31,7 @@ export default function Login() {
   };
 
   return (
-    <Box
+    <StyledContainer
       sx={{
         maxWidth: 400,
         mx: "auto",
@@ -64,6 +65,7 @@ export default function Login() {
             required
           />
         </Grid>
+
         <Grid>
           <TextField
             label="Password"
@@ -89,6 +91,6 @@ export default function Login() {
           <Typography>I don't have account</Typography>
         </Link>
       </Grid>
-    </Box>
+    </StyledContainer>
   );
 }

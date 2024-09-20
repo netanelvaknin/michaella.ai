@@ -4,3 +4,4 @@ export * from "./mui-button";
 export * from "./mui-checkbox";
 export * from "./mui-toggle-button-group";
 export * from "./mui-css-baseline";
+export * from "./mui-form-helper-text";
