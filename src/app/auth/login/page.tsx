@@ -3,8 +3,6 @@
 import { useState } from "react";
 import {
   TextField,
-  Checkbox,
-  FormControlLabel,
   Button,
   Box,
   Typography,
@@ -13,29 +11,22 @@ import {
 } from "@mui/material";
 import Grid from "@mui/material/Grid2";
 
-export default function Register() {
+export default function Login() {
   const [values, setValues] = useState({
-    fullName: "",
     email: "",
     password: "",
-    termsAccepted: false,
   });
 
   const handleChange = (e: any) => {
-    const { name, value, checked, type } = e.target;
+    const { name, value } = e.target;
     setValues((prevForm) => ({
       ...prevForm,
-      [name]: type === "checkbox" ? checked : value,
+      [name]: value,
     }));
   };
 
   const handleSubmit = (e: any) => {
     e.preventDefault();
-    if (values.termsAccepted) {
-      console.log("Form Submitted", values);
-    } else {
-      alert("You must accept the terms and agreement to register");
-    }
   };
 
   return (
@@ -59,19 +50,10 @@ export default function Register() {
       >
         <Grid>
           <Typography variant="h2" textAlign="center">
-            Register
+            Login
           </Typography>
         </Grid>
 
-        <Grid>
-          <TextField
-            label="Full Name"
-            name="fullName"
-            value={values.fullName}
-            onChange={handleChange}
-            required
-          />
-        </Grid>
         <Grid>
           <TextField
             label="Email"
@@ -94,28 +76,17 @@ export default function Register() {
         </Grid>
 
         <Grid>
-          <FormControlLabel
-            control={
-              <Checkbox
-                name="termsAccepted"
-                checked={values.termsAccepted}
-                onChange={handleChange}
-              />
-            }
-            label="I accept the terms and agreement"
-          />
-        </Grid>
-
-        <Grid>
           <Button variant="contained" color="primary" onClick={handleSubmit}>
-            Register
+            Login
           </Button>
         </Grid>
       </Grid>
+
       <Divider sx={{ mt: 4, mb: 4 }} />
+
       <Grid container justifyContent="center">
-        <Link href="/auth/login">
-          <Typography>I already have account</Typography>
+        <Link href="/auth/register">
+          <Typography>I don't have account</Typography>
         </Link>
       </Grid>
     </Box>

@@ -24,8 +24,8 @@ export const Navbar = () => {
             <Button variant="text" href="/about" sx={{ mr: 5 }}>
               About
             </Button>
-            <Button variant="text" href="/auth">
-              Register / Sign in
+            <Button variant="text" href="/auth/register">
+              Try it now
             </Button>
           </Grid>
         </Grid>

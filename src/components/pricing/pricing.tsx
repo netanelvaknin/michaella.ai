@@ -5,6 +5,8 @@ import {
   StyledPricingContainer,
 } from "@/components/pricing/pricing.styled";
 import CheckOutlinedIcon from "@mui/icons-material/CheckOutlined";
+import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
+import { IconButton, Tooltip } from "@mui/material";
 
 const Pricing = () => {
   return (
@@ -100,10 +102,20 @@ const Pricing = () => {
 
             <Grid container alignItems="center">
               <CheckOutlinedIcon sx={{ color: "secondary.dark" }} />
-              <Grid>
-                <Typography color="secondary.dark">
+              <Grid container alignItems="center">
+                <Typography
+                  color="secondary.dark"
+                  sx={{
+                    fontWeight: "bold",
+                  }}
+                >
                   Shareable quizzes
                 </Typography>
+                <Tooltip title="You can share your quizzes with colleagues to let them take the test as well.">
+                  <IconButton sx={{ p: 0 }}>
+                    <InfoOutlinedIcon sx={{ fontSize: "18px" }} />
+                  </IconButton>
+                </Tooltip>
               </Grid>
             </Grid>
 
