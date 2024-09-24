@@ -20,6 +20,7 @@ async function connect() {
     console.log("Connected to MongoDB");
     return cachedConnection;
   } catch (e) {
+    console.log(e);
     console.error("Error connecting to MongoDB");
   }
 }

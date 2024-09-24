@@ -13,134 +13,35 @@ import {
   IconButton,
   FormHelperText,
 } from "@mui/material";
-
 import Grid from "@mui/material/Grid2";
 import { SnackbarCloseReason } from "@mui/material/Snackbar";
 import CloseIcon from "@mui/icons-material/Close";
-import validator from "validator";
 import { StyledContainer } from "@/app/auth/register/_register.styled";
+import { useForm, Controller } from "react-hook-form";
+import { useRouter } from "next/navigation";
 
 interface FormValues {
   fullName: string;
   email: string;
   password: string;
-  termsAccepted: boolean;
+  acceptedTerms: boolean;
 }
 
 export default function Register() {
+  const router = useRouter();
   const [snackbarValue, setSnackbarValue] = useState("");
-  const [values, setValues] = useState<FormValues>({
-    fullName: "",
-    email: "",
-    password: "",
-    termsAccepted: false,
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    defaultValues: {
+      fullName: "",
+      email: "",
+      password: "",
+      acceptedTerms: false,
+    },
   });
-  const [errors, setErrors] = useState<{
-    fullName?: string;
-    email?: string;
-    password?: string;
-    termsAccepted?: string;
-  }>({});
-
-  const validateField = (name: string, value: string) => {
-    let error = "";
-    const passwordPattern = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{7,}$/; // At least 7 characters, with one letter and one number
-
-    switch (name) {
-      case "fullName":
-        if (!value) {
-          error = "Full Name is required";
-        }
-        break;
-
-      case "email":
-        if (!validator.isEmail(values.email)) {
-          error = "Please enter a valid email address";
-        }
-        break;
-
-      case "password":
-        if (!value) {
-          error = "Password is required";
-        } else if (!passwordPattern.test(value)) {
-          error =
-            "Password must be at least 7 characters long, and include at least one letter and one number";
-        }
-        break;
-
-      case "termsAccepted":
-        if (!value) {
-          error = "You must accept the terms and agreement";
-        }
-        break;
-
-      default:
-        break;
-    }
-
-    setErrors((prevErrors) => ({
-      ...prevErrors,
-      [name]: error,
-    }));
-  };
-
-  const handleChange = (e: any) => {
-    const { name, value, checked, type } = e.target;
-    const fieldValue = type === "checkbox" ? checked : value;
-
-    setValues((prevForm) => ({
-      ...prevForm,
-      [name]: type === "checkbox" ? checked : value,
-    }));
-
-    validateField(name, fieldValue);
-  };
-
-  const validateForm = () => {
-    let tempErrors: {
-      fullName?: string;
-      email?: string;
-      password?: string;
-      termsAccepted?: string;
-    } = {};
-
-    const passwordPattern = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{7,}$/; // At least 7 characters, with one letter and one number
-
-    // Full Name validation
-    if (!values.fullName) {
-      tempErrors.fullName = "Full Name is required";
-    }
-
-    if (!validator.isEmail(values.email)) {
-      tempErrors.email = "Please enter a valid email address";
-    }
-
-    // Password validation
-    if (!values.password) {
-      tempErrors.password = "Password is required";
-    } else if (!passwordPattern.test(values.password)) {
-      tempErrors.password =
-        "Password must be at least 7 characters long, and include at least one letter and one number";
-    }
-
-    if (!values.termsAccepted) {
-      tempErrors.termsAccepted = "You must accept the terms and agreement";
-    }
-
-    setErrors(tempErrors);
-    return Object.keys(tempErrors).length === 0;
-  };
-
-  const handleSubmit = (e: any) => {
-    e.preventDefault();
-
-    if (validateForm()) {
-      console.log("Form Submitted", values);
-      // Add submission logic here (e.g., API call)
-    } else {
-      console.log("Validation Errors", errors);
-    }
-  };
 
   const handleCloseSnackbar = (
     event: React.SyntheticEvent | Event,
@@ -151,6 +52,20 @@ export default function Register() {
     }
 
     setSnackbarValue("");
+  };
+
+  const onSubmit = async (data: FormValues) => {
+    try {
+      fetch("/api/auth/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      }).then((res) => {
+        router.push("/dashboard");
+      });
+    } catch (e: any) {}
   };
 
   return (
@@ -165,105 +80,146 @@ export default function Register() {
         boxShadow: 3,
       }}
     >
-      <Grid
-        container
-        justifyContent="center"
-        alignItems="center"
-        direction="column"
-        spacing={4}
-      >
-        <Grid>
-          <Typography variant="h2" textAlign="center">
-            Register
-          </Typography>
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <Grid
+          container
+          justifyContent="center"
+          alignItems="center"
+          direction="column"
+          spacing={4}
+        >
+          <Grid>
+            <Typography variant="h2" textAlign="center">
+              Register
+            </Typography>
+          </Grid>
+
+          <Grid>
+            <Controller
+              name="fullName"
+              control={control}
+              rules={{
+                required: "Full name is required",
+                minLength: { value: 3, message: "Not valid full name value" },
+              }}
+              render={({ field }) => (
+                <TextField
+                  label="Full Name"
+                  error={!!errors.fullName}
+                  helperText={
+                    errors.fullName ? errors.fullName.message : undefined
+                  }
+                  {...field}
+                />
+              )}
+            />
+          </Grid>
+
+          <Grid>
+            <Controller
+              name="email"
+              control={control}
+              rules={{
+                required: "Email is required",
+                pattern: {
+                  value: /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+                  message: "Not a valid email address",
+                },
+              }}
+              render={({ field }) => (
+                <TextField
+                  type="email"
+                  label="Email Address"
+                  error={!!errors.email}
+                  helperText={errors.email ? errors.email.message : undefined}
+                  {...field}
+                />
+              )}
+            />
+          </Grid>
+
+          <Grid>
+            <Controller
+              name="password"
+              control={control}
+              rules={{
+                required: "Password is required",
+                pattern: {
+                  value: /^(?=.*[a-zA-Z])(?=.*\d).{6,12}$/,
+                  message:
+                    "At least one letter and one number, 6-12 characters in total",
+                },
+              }}
+              render={({ field }) => (
+                <TextField
+                  type="password"
+                  label="Password"
+                  error={!!errors.password}
+                  helperText={
+                    errors.password ? errors.password.message : undefined
+                  }
+                  {...field}
+                />
+              )}
+            />
+          </Grid>
+
+          <Grid>
+            <Controller
+              name="acceptedTerms"
+              control={control}
+              rules={{ required: true }}
+              render={({ field }) => (
+                <>
+                  <FormControlLabel
+                    sx={{
+                      color: errors.acceptedTerms ? "error.main" : "initial",
+                    }}
+                    control={<Checkbox {...field} />}
+                    label="I accept the terms and agreement"
+                  />
+                  {errors.acceptedTerms && (
+                    <FormHelperText sx={{ color: "error.main" }}>
+                      Required field
+                    </FormHelperText>
+                  )}
+                </>
+              )}
+            />
+          </Grid>
+
+          <Grid>
+            <Button type="submit" variant="contained" color="primary">
+              Register
+            </Button>
+          </Grid>
         </Grid>
 
-        <Grid>
-          <TextField
-            label="Full Name"
-            name="fullName"
-            value={values.fullName}
-            onChange={handleChange}
-            required
-            error={!!errors.fullName}
-            helperText={errors.fullName}
-          />
-        </Grid>
-        <Grid>
-          <TextField
-            label="Email"
-            name="email"
-            type="email"
-            value={values.email}
-            onChange={handleChange}
-            required
-            error={!!errors.email}
-            helperText={errors.email}
-          />
-        </Grid>
-        <Grid>
-          <TextField
-            label="Password"
-            name="password"
-            type="password"
-            value={values.password}
-            onChange={handleChange}
-            required
-            error={!!errors.password}
-            helperText={errors.password}
-          />
+        <Divider sx={{ mt: 4, mb: 4 }} />
+
+        <Grid container justifyContent="center">
+          <Link href="/auth/login">
+            <Typography>I already have account</Typography>
+          </Link>
         </Grid>
 
-        <Grid>
-          <FormControlLabel
-            sx={{ color: errors.termsAccepted ? "error.main" : "initial" }}
-            control={
-              <Checkbox
-                name="termsAccepted"
-                checked={values.termsAccepted}
-                onChange={handleChange}
-              />
-            }
-            label="I accept the terms and agreement"
-          />
-          {errors.termsAccepted && (
-            <FormHelperText sx={{ color: "error.main" }}>
-              Required field
-            </FormHelperText>
-          )}
-        </Grid>
-
-        <Grid>
-          <Button variant="contained" color="primary" onClick={handleSubmit}>
-            Register
-          </Button>
-        </Grid>
-      </Grid>
-
-      <Divider sx={{ mt: 4, mb: 4 }} />
-
-      <Grid container justifyContent="center">
-        <Link href="/auth/login">
-          <Typography>I already have account</Typography>
-        </Link>
-      </Grid>
-
-      <Snackbar
-        open={!!snackbarValue}
-        autoHideDuration={10000}
-        onClose={handleCloseSnackbar}
-        message={snackbarValue}
-        action={
-          <IconButton
-            size="small"
-            aria-label="close"
-            color="inherit"
-            onClick={handleCloseSnackbar}
-          >
-            <CloseIcon fontSize="small" />
-          </IconButton>
-        }
-      />
+        <Snackbar
+          open={!!snackbarValue}
+          autoHideDuration={10000}
+          onClose={handleCloseSnackbar}
+          message={snackbarValue}
+          action={
+            <IconButton
+              size="small"
+              aria-label="close"
+              color="inherit"
+              onClick={handleCloseSnackbar}
+            >
+              <CloseIcon fontSize="small" />
+            </IconButton>
+          }
+        />
+      </form>
     </StyledContainer>
   );
 }

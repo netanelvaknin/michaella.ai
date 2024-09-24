@@ -16,7 +16,7 @@ async function hashPassword(password: string) {
   });
 }
 
-export async function POST(request: Request, response: Response) {
+export async function POST(request: Request) {
   try {
     const body = await request.json();
     const cookieStore = cookies();
@@ -31,7 +31,12 @@ export async function POST(request: Request, response: Response) {
     const userExists = await User.findOne({ email });
 
     if (userExists) {
-      // return response.status(400).json(API_ERRORS.registrationEmailExistsError);
+      return Response.json(
+        { res: "User already exists" },
+        {
+          status: 400,
+        }
+      );
     }
 
     const hashedPassword = await hashPassword(password);
@@ -62,7 +67,6 @@ export async function POST(request: Request, response: Response) {
       { res: "successful" },
       {
         status: 200,
-        headers: { "Set-Cookie": `token=${cookieStore.get("token")}` },
       }
     );
   } catch (e) {
