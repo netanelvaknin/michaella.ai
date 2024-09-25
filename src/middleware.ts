@@ -4,7 +4,7 @@ import { cookies } from "next/headers";
 export async function middleware(request: NextRequest) {
   if (request.nextUrl.pathname.startsWith("/dashboard")) {
     if (!cookies().get("token")?.value) {
-      return NextResponse.redirect(new URL("/", request.url));
+      return NextResponse.redirect(new URL("/auth/login", request.url));
     }
   }
 }

@@ -25,7 +25,12 @@ export async function POST(request: Request) {
     const { fullName, email, password, acceptedTerms } = body;
 
     if (!validator.isEmail(email)) {
-      // return response.status(400).json(API_ERRORS.invalidEmailError);
+      return Response.json(
+        { message: "Email address is not valid" },
+        {
+          status: 400,
+        }
+      );
     }
 
     const userExists = await User.findOne({ email });
@@ -48,7 +53,12 @@ export async function POST(request: Request) {
     });
 
     if (!newUser) {
-      // return res.status(400).json(API_ERRORS.registrationError);
+      return Response.json(
+        { message: "There was a issue on our side, please try again" },
+        {
+          status: 400,
+        }
+      );
     }
 
     const token = jwt.sign({ email }, process.env.ACCESS_TOKEN_SECRET || "", {
@@ -64,7 +74,7 @@ export async function POST(request: Request) {
     });
 
     return Response.json(
-      { res: "successful" },
+      { message: "successful" },
       {
         status: 200,
       }
@@ -72,7 +82,7 @@ export async function POST(request: Request) {
   } catch (e) {
     console.error(e);
     return Response.json({
-      res: "An error occurred on our end. Please try again later.",
+      message: "An error occurred on our end. Please try again later.",
       status: 400,
     });
   }

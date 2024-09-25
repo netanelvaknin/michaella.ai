@@ -63,7 +63,14 @@ export default function Register() {
         },
         body: JSON.stringify(data),
       }).then((res) => {
-        router.push("/dashboard");
+        if (res.ok) {
+          setSnackbarValue(
+            "Registered successfully, Redirecting to dashboard..."
+          );
+          setTimeout(() => {
+            router.push("/dashboard");
+          }, 3000);
+        }
       });
     } catch (e: any) {}
   };
