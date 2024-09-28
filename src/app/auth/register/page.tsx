@@ -29,6 +29,7 @@ interface FormValues {
 
 export default function Register() {
   const router = useRouter();
+  const [isDisabled, setIsDisabled] = useState(false);
   const [snackbarValue, setSnackbarValue] = useState("");
   const {
     control,
@@ -55,6 +56,8 @@ export default function Register() {
   };
 
   const onSubmit = async (data: FormValues) => {
+    setIsDisabled(true);
+
     try {
       fetch("/api/auth/register", {
         method: "POST",
@@ -62,7 +65,7 @@ export default function Register() {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(data),
-      }).then((res) => {
+      }).then(async (res) => {
         if (res.ok) {
           setSnackbarValue(
             "Registered successfully, Redirecting to payment page..."
@@ -70,9 +73,16 @@ export default function Register() {
           setTimeout(() => {
             router.push("/payment");
           }, 3000);
+        } else {
+          const { message } = await res.json();
+          setSnackbarValue(message);
         }
       });
-    } catch (e: any) {}
+    } catch (e: any) {
+      console.error(e);
+    }
+
+    setIsDisabled(false);
   };
 
   return (
@@ -196,7 +206,12 @@ export default function Register() {
           </Grid>
 
           <Grid>
-            <Button type="submit" variant="contained" color="primary">
+            <Button
+              type="submit"
+              variant="contained"
+              color="primary"
+              disabled={isDisabled}
+            >
               Register
             </Button>
           </Grid>

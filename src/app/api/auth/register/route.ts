@@ -37,7 +37,7 @@ export async function POST(request: Request) {
 
     if (userExists) {
       return Response.json(
-        { res: "User already exists" },
+        { message: "User already exists" },
         {
           status: 400,
         }

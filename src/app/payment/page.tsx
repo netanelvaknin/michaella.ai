@@ -12,9 +12,11 @@ import {
 } from "@mui/material";
 import Grid from "@mui/material/Grid2";
 import { Typography } from "@/ui";
+import { useRouter } from "next/navigation";
 
 const Payment = () => {
   const [planType, setPlanType] = useState("basic-plan");
+  const router = useRouter();
 
   const PaypalComponent = useCallback(
     () => (
@@ -57,7 +59,6 @@ const Payment = () => {
             }
           }}
           onApprove={async (data, actions) => {
-            console.log("HERE!!!");
             try {
               const response = await fetch(`/api/order/capture`, {
                 method: "POST",
@@ -92,6 +93,8 @@ const Payment = () => {
                 console.log("->", orderData);
                 const transaction =
                   orderData.message.purchase_units[0].payments.captures[0];
+
+                router.push("/dashboard");
                 console.log(
                   "Capture result",
                   orderData,
