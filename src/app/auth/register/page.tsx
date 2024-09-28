@@ -65,10 +65,10 @@ export default function Register() {
       }).then((res) => {
         if (res.ok) {
           setSnackbarValue(
-            "Registered successfully, Redirecting to dashboard..."
+            "Registered successfully, Redirecting to payment page..."
           );
           setTimeout(() => {
-            router.push("/dashboard");
+            router.push("/payment");
           }, 3000);
         }
       });

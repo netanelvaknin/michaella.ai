@@ -29,6 +29,12 @@ const UserSchema = new mongoose.Schema(
       type: Boolean,
       required: true,
     },
+    accountInformation: {
+      paid: Boolean,
+      planType: String,
+      purchaseDate: Date,
+      quizzesAmount: Number,
+    },
   },
   { collection: "users" }
 );

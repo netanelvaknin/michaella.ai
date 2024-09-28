@@ -36,10 +36,10 @@ const Pricing = () => {
       <Grid container justifyContent="center" spacing={4}>
         <PricingCard sx={{ width: "350px", background: "white" }}>
           <Typography variant="h4" align="center">
-            Starter
+            Basic
           </Typography>
           <Typography variant="h2" align="center" sx={{ m: 4 }}>
-            9$
+            $9
           </Typography>
           <Typography variant="body1" align="center" color="secondary.dark">
             Per month
@@ -50,7 +50,7 @@ const Pricing = () => {
               <CheckOutlinedIcon sx={{ color: "secondary.dark" }} />
               <Grid>
                 <Typography color="secondary.dark" variant="body1">
-                  100 Quizzes
+                  50 Quizzes
                 </Typography>
               </Grid>
             </Grid>
@@ -72,10 +72,10 @@ const Pricing = () => {
 
         <PricingCard sx={{ width: "350px", background: "white" }}>
           <Typography variant="h4" align="center">
-            Starter
+            Advanced
           </Typography>
           <Typography variant="h2" align="center" sx={{ m: 4 }}>
-            19$
+            $19
           </Typography>
           <Typography variant="body1" align="center" color="secondary.dark">
             Per month
@@ -86,7 +86,7 @@ const Pricing = () => {
               <CheckOutlinedIcon sx={{ color: "secondary.dark" }} />
               <Grid>
                 <Typography color="secondary.dark" variant="body1">
-                  200 Quizzes
+                  100 Quizzes
                 </Typography>
               </Grid>
             </Grid>
