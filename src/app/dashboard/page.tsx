@@ -1,13 +1,15 @@
-import { Typography } from "@mui/material";
+import { Container, Typography } from "@mui/material";
 import { FileUpload } from "@/components";
 
 const Dashboard = () => {
   return (
-    <div>
+    <Container>
       {/* eslint-disable-next-line react/no-unescaped-entities */}
-      <Typography variant="h3">Let's generate your quiz</Typography>
+      <Typography variant="h3" sx={{ mb: 4 }}>
+        Let's generate your quiz, upload your PDF file:
+      </Typography>
       <FileUpload />
-    </div>
+    </Container>
   );
 };
 

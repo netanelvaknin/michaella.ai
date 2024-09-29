@@ -1,6 +1,6 @@
 "use client";
 
-import { Box, Button, Typography } from "@mui/material";
+import { Box, Button, Divider, Typography } from "@mui/material";
 import { useDropzone } from "react-dropzone";
 import { useState } from "react";
 import Question from "@/components/question/question";
@@ -52,7 +52,7 @@ export const FileUpload = () => {
   };
 
   return (
-    <Box sx={{ p: 2 }}>
+    <Box>
       {!loading ? (
         <>
           <Box
@@ -73,7 +73,11 @@ export const FileUpload = () => {
           <ul>{files}</ul>
 
           {files && files?.length !== 0 && (
-            <Button variant="contained" onClick={handleFileSubmit}>
+            <Button
+              variant="contained"
+              onClick={handleFileSubmit}
+              sx={{ mb: 8 }}
+            >
               Upload File
             </Button>
           )}
@@ -83,17 +87,27 @@ export const FileUpload = () => {
       )}
 
       <div>
-        {!loading &&
-          response?.map((questionData: QuestionData, index: number) => {
-            return (
-              <Question
-                key={index}
-                question={questionData.question}
-                answers={questionData.answers}
-                correct={questionData.correct}
-              />
-            );
-          })}
+        {!loading && (
+          <>
+            {response?.length !== 0 && (
+              <Typography variant="h4" sx={{ mb: 8 }}>
+                Here's your questions, Good luck!
+              </Typography>
+            )}
+            {response?.map((questionData: QuestionData, index: number) => {
+              return (
+                <Box key={index}>
+                  <Divider sx={{ mb: 8 }} />
+                  <Question
+                    question={questionData.question}
+                    answers={questionData.answers}
+                    correct={questionData.correct}
+                  />
+                </Box>
+              );
+            })}
+          </>
+        )}
       </div>
     </Box>
   );

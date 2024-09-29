@@ -19,7 +19,7 @@ const ThankYou = () => {
         </Grid>
         <Grid sx={{ mb: 4 }}>
           <Typography align="center" variant="body1">
-            We are hoping that you will enjoy using our system
+            We are hoping that you will enjoy using our system as a quiz maker.
           </Typography>
         </Grid>
         <Grid>

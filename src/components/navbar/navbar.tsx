@@ -1,8 +1,15 @@
+"use client";
+
 import Grid from "@mui/material/Grid2";
 import { Button, Typography } from "@/ui";
 import { StyledNavbar } from "@/components/navbar/navbar.styled";
+import { usePathname } from "next/navigation";
+
+const afterRegisterationPaths = ["/dashboard", "/thank-you", "/payment"];
 
 export const Navbar = () => {
+  const pathname = usePathname();
+
   return (
     <header>
       <StyledNavbar>
@@ -20,14 +27,16 @@ export const Navbar = () => {
             </Button>
           </Grid>
 
-          <Grid>
-            <Button variant="text" href="/about" sx={{ mr: 5 }}>
-              About
-            </Button>
-            <Button variant="text" href="/auth/register">
-              Try it now
-            </Button>
-          </Grid>
+          {!afterRegisterationPaths.includes(pathname) && (
+            <Grid>
+              <Button variant="text" href="/about" sx={{ mr: 5 }}>
+                About
+              </Button>
+              <Button variant="text" href="/auth/register">
+                Try it now
+              </Button>
+            </Grid>
+          )}
         </Grid>
       </StyledNavbar>
     </header>

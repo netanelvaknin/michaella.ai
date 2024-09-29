@@ -28,7 +28,7 @@ function Question({ question, answers, correct }: QuestionProps) {
   };
 
   return (
-    <Box key={question} sx={{ m: 4 }}>
+    <Box key={question} sx={{ m: "16px 16px 42px" }}>
       <Grid direction="column">
         <Grid>
           <FormControl error={!isCorrectAnswer} disabled={isDisabled}>
@@ -66,6 +66,7 @@ function Question({ question, answers, correct }: QuestionProps) {
 
           <Button
             variant="contained"
+            sx={{ mt: 4 }}
             onClick={() => {
               setIsCorrectAnswer(selectedAnswer === correct);
               setShowCorrectAnswer(true);

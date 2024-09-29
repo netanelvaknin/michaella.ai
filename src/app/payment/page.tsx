@@ -94,7 +94,7 @@ const Payment = () => {
                 const transaction =
                   orderData.message.purchase_units[0].payments.captures[0];
 
-                router.push("/dashboard");
+                router.push("/thank-you");
                 console.log(
                   "Capture result",
                   orderData,
