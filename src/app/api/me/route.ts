@@ -1,20 +1,16 @@
 import connect from "@/db/connect-mongo";
-import { cookies } from "next/headers";
 import { User } from "@/models/user";
 import jwt from "jsonwebtoken";
 
-export async function PUT(request: Request) {
+export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const cookieStore = cookies();
+    const { token } = body;
     await connect();
-
-    const { paid, planType, purchaseDate, quizzesAmount } = body;
-    const token = cookieStore.get("token");
 
     if (!token) {
       return Response.json(
-        { message: "Unable to update user" },
+        { message: "Unable to get user" },
         {
           status: 400,
         }
@@ -22,32 +18,22 @@ export async function PUT(request: Request) {
     }
 
     const decodedToken: any = jwt.verify(
-      token.value,
+      token,
       process.env.ACCESS_TOKEN_SECRET || ""
     );
 
-    const updatedUser = await User.updateOne(
-      { email: decodedToken.email },
-      {
-        accountInformation: {
-          paid,
-          planType,
-          purchaseDate,
-          quizzesAmount,
-        },
-      }
-    );
+    const user = await User.findOne({ email: decodedToken.email });
 
-    if (updatedUser) {
+    if (user) {
       return Response.json(
-        { message: "successful" },
+        { message: "successful", value: user },
         {
           status: 200,
         }
       );
     } else {
       return Response.json(
-        { message: "Unable to update user" },
+        { message: "Unable to get user" },
         {
           status: 400,
         }

@@ -5,7 +5,6 @@ import {
   TextField,
   Checkbox,
   FormControlLabel,
-  Button,
   Typography,
   Divider,
   Link,
@@ -19,6 +18,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import { StyledContainer } from "@/app/auth/register/_register.styled";
 import { useForm, Controller } from "react-hook-form";
 import { useRouter } from "next/navigation";
+import { Button } from "@/ui";
 
 interface FormValues {
   fullName: string;
@@ -37,10 +37,10 @@ export default function Register() {
     formState: { errors },
   } = useForm({
     defaultValues: {
-      fullName: "",
+      fullName: "netanel vaknin",
       email: "",
-      password: "",
-      acceptedTerms: false,
+      password: "Mishmish1!",
+      acceptedTerms: true,
     },
   });
 
@@ -68,21 +68,22 @@ export default function Register() {
       }).then(async (res) => {
         if (res.ok) {
           setSnackbarValue(
-            "Registered successfully, Redirecting to payment page..."
+            "Registered successfully, Redirecting to dashboard..."
           );
           setTimeout(() => {
-            router.push("/payment");
+            setIsDisabled(false);
+            router.push("/dashboard");
           }, 3000);
         } else {
           const { message } = await res.json();
           setSnackbarValue(message);
+          setIsDisabled(false);
         }
       });
     } catch (e: any) {
+      setIsDisabled(false);
       console.error(e);
     }
-
-    setIsDisabled(false);
   };
 
   return (

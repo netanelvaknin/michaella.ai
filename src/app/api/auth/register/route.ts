@@ -50,6 +50,12 @@ export async function POST(request: Request) {
       email,
       password: hashedPassword,
       acceptedTerms,
+      accountInformation: {
+        paid: false,
+        planType: "free-plan",
+        purchaseDate: Date.now(),
+        quizzesAmount: 3,
+      },
     });
 
     if (!newUser) {

@@ -29,9 +29,9 @@ export const Navbar = () => {
 
           {!afterRegisterationPaths.includes(pathname) && (
             <Grid>
-              <Button variant="text" href="/about" sx={{ mr: 5 }}>
-                About
-              </Button>
+              {/*<Button variant="text" href="/about" sx={{ mr: 5 }}>*/}
+              {/*  About*/}
+              {/*</Button>*/}
               <Button variant="text" href="/auth/register">
                 Try it now
               </Button>

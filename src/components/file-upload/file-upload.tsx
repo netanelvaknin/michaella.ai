@@ -1,10 +1,11 @@
 "use client";
 
-import { Box, Button, Divider, Typography } from "@mui/material";
+import { Box, Button, Divider, Link, Typography } from "@mui/material";
 import { useDropzone } from "react-dropzone";
 import { useState } from "react";
 import Question from "@/components/question/question";
 import { useSnackbar } from "@/contexts/snackbar";
+import revalidateTag from "@/actions";
 
 interface QuestionData {
   question: string;
@@ -12,7 +13,7 @@ interface QuestionData {
   correct: string;
 }
 
-export const FileUpload = () => {
+export const FileUpload = ({ quizzesAmount }: { quizzesAmount: number }) => {
   const [response, setResponse] = useState<QuestionData[]>([]);
   const [loading, setLoading] = useState(false);
   const { acceptedFiles, getRootProps, getInputProps } = useDropzone({
@@ -49,6 +50,18 @@ export const FileUpload = () => {
     const data = await res.json();
     setResponse(JSON.parse(data.res)?.data);
     setLoading(false);
+
+    await fetch("/api/plan/update", {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        quizzesAmount: quizzesAmount - 1,
+      }),
+    });
+
+    await revalidateTag("accountInformation");
   };
 
   return (
@@ -73,13 +86,32 @@ export const FileUpload = () => {
           <ul>{files}</ul>
 
           {files && files?.length !== 0 && (
-            <Button
-              variant="contained"
-              onClick={handleFileSubmit}
-              sx={{ mb: 8 }}
-            >
-              Upload File
-            </Button>
+            <>
+              <Button
+                variant="contained"
+                onClick={handleFileSubmit}
+                sx={{ mb: 8 }}
+                disabled={quizzesAmount === 0}
+              >
+                Upload File
+              </Button>
+
+              {quizzesAmount === 0 && (
+                <Box sx={{ display: "inline" }}>
+                  <Typography variant="body1" sx={{ fontWeight: "bold" }}>
+                    Unfortunately, You don't have quizzes generations left.
+                    Please,{" "}
+                    <Link
+                      sx={{ fontWeight: "bold" }}
+                      variant="body1"
+                      href="/payment"
+                    >
+                      Upgrade your plan
+                    </Link>
+                  </Typography>
+                </Box>
+              )}
+            </>
           )}
         </>
       ) : (

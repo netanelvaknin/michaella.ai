@@ -42,9 +42,6 @@ export const Hero = () => {
           <Button variant="contained" onClick={() => router.push("/auth")}>
             Try it now
           </Button>
-          <Button variant="outlined" onClick={() => router.push("/about")}>
-            About us
-          </Button>
         </Grid>
       </Grid>
     </Box>

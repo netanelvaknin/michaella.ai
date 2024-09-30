@@ -1,3 +1,5 @@
+"use client";
+
 import { Button, Typography } from "@/ui";
 import Grid from "@mui/material/Grid2";
 import {
@@ -7,8 +9,11 @@ import {
 import CheckOutlinedIcon from "@mui/icons-material/CheckOutlined";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import { IconButton, Tooltip } from "@mui/material";
+import { useRouter } from "next/navigation";
 
 const Pricing = () => {
+  const router = useRouter();
+
   return (
     <StyledPricingContainer>
       <Grid
@@ -26,23 +31,20 @@ const Pricing = () => {
           color="secondary.dark"
           variant="body1"
           align="center"
-          sx={{ maxWidth: "680px" }}
+          sx={{ maxWidth: "470px" }}
         >
-          Michaella.ai offers flexible pricing plans to fit your needs. Choose
-          the plan that works best for you.
+          We offer generation-based plans. <br /> Choose the plan that works
+          best for you.
         </Typography>
       </Grid>
 
       <Grid container justifyContent="center" spacing={4}>
         <PricingCard sx={{ width: "350px", background: "white" }}>
           <Typography variant="h4" align="center">
-            Basic
+            Exploring
           </Typography>
           <Typography variant="h2" align="center" sx={{ m: 4 }}>
-            $9
-          </Typography>
-          <Typography variant="body1" align="center" color="secondary.dark">
-            Per month
+            FREE
           </Typography>
 
           <Grid container direction="column" sx={{ mt: 5 }} spacing={2}>
@@ -50,21 +52,16 @@ const Pricing = () => {
               <CheckOutlinedIcon sx={{ color: "secondary.dark" }} />
               <Grid>
                 <Typography color="secondary.dark" variant="body1">
-                  50 Quizzes
+                  3 Auto generated quizzes
                 </Typography>
               </Grid>
             </Grid>
 
-            <Grid container alignItems="center">
-              <CheckOutlinedIcon sx={{ color: "secondary.dark" }} />
-              <Grid>
-                <Typography color="secondary.dark">
-                  Basic quiz customization
-                </Typography>
-              </Grid>
-            </Grid>
-
-            <Button variant="contained" sx={{ mt: 14 }}>
+            <Button
+              variant="contained"
+              sx={{ mt: 23 }}
+              onClick={() => router.push("/dashboard")}
+            >
               Get started
             </Button>
           </Grid>
@@ -75,10 +72,7 @@ const Pricing = () => {
             Advanced
           </Typography>
           <Typography variant="h2" align="center" sx={{ m: 4 }}>
-            $19
-          </Typography>
-          <Typography variant="body1" align="center" color="secondary.dark">
-            Per month
+            $9
           </Typography>
 
           <Grid container direction="column" sx={{ mt: 5 }} spacing={2}>
@@ -86,7 +80,7 @@ const Pricing = () => {
               <CheckOutlinedIcon sx={{ color: "secondary.dark" }} />
               <Grid>
                 <Typography color="secondary.dark" variant="body1">
-                  100 Quizzes
+                  50 Quizzes
                 </Typography>
               </Grid>
             </Grid>
@@ -119,7 +113,11 @@ const Pricing = () => {
               </Grid>
             </Grid>
 
-            <Button variant="contained" sx={{ mt: 5 }}>
+            <Button
+              variant="contained"
+              sx={{ mt: 5 }}
+              onClick={() => router.push("/dashboard")}
+            >
               Get started
             </Button>
           </Grid>
